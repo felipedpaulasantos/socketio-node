@@ -51,8 +51,7 @@ app.get('/', (req, res) => {
 }); */
 
 app.post('/mensagem', function (req, res, next) {
-	console.log(req.body);
-	io.emit(EVENTO_MENSAGEM, req.body.mensagem);
+	io.emit(EVENTO_MENSAGEM, `Back: ${req.body.mensagem}`);
   res.json(req.body);
 })
 

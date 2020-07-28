@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+	<head>
+		<title>Socket.IO chat</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font: 13px Helvetica, Arial;
+			}
+
+			form {
+				padding: 50px;
+				width: 100%;
+			}
+
+			form input {
+				border: 0;
+				padding: 10px;
+				width: 90%;
+				margin-right: 0.5%;
+				border-bottom: solid 1px grey;
+			}
+
+			form button {
+				width: 9%;
+				background: rgb(130, 224, 255);
+				border: none;
+				padding: 10px;
+			}
+
+			#timer {
+				text-align: center;
+				margin: 20px 0;
+			}
+
+			#messages {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+
+			#messages li {
+				padding: 5px 10px;
+			}
+
+			#messages li:nth-child(odd) {
+				background: #eee;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1 id="timer">
+
+		</h1>
+		<ul id="messages"></ul>
+		<form action="">
+			<input id="m" autocomplete="off" /><button>Send</button>
+		</form>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script>
+			$(function () {
+				var socket = io();
+				$('form').submit(function (e) {
+					e.preventDefault(); // prevents page reloading
+					$.post('/mensagem', { mensagem: $('#m').val() })
+					$('#m').val('');
+					return false;
+				});
+				socket.on('message', function (msg) {
+					$('#messages').append($('<li>').text(msg));
+				});
+				socket.on('my broadcast', function (count) {
+					$('#timer').text(count);
+				});
+			});
+		</script>
+	</body>
+
+</html>
